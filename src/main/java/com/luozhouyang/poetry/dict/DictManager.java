@@ -63,7 +63,7 @@ public class DictManager {
      * @param parallel         max threads
      * @param keepAliveSeconds thread's keep alive time in seconds
      */
-    public void manage(int parallel, long keepAliveSeconds) {
+    public void manage(int parallel, long keepAliveSeconds, long timeoutSeconds) {
         if (initialized) {
             logger.info("DictManager has been initialized.");
             return;
@@ -74,7 +74,7 @@ public class DictManager {
         }
         pool.shutdown();
         try {
-            pool.awaitTermination(120L, TimeUnit.SECONDS);
+            pool.awaitTermination(timeoutSeconds, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             logger.warn("ThreadPool await exception: ", e);
             e.printStackTrace();
@@ -88,7 +88,7 @@ public class DictManager {
      * @param parallel max threads
      */
     public void manage(int parallel) {
-        this.manage(parallel, 120L);
+        this.manage(parallel, 60L, 120L);
     }
 
     /**

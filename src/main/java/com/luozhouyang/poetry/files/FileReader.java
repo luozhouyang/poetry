@@ -1,19 +1,12 @@
-package com.luozhouyang.poetry.dict;
+package com.luozhouyang.poetry.files;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
-/**
- * A helper class to read dict file(s).
- *
- * @author luozhouyang
- */
-public class DictFileReader {
-
+public class FileReader {
     /**
      * A callback when read file line
      */
@@ -35,7 +28,18 @@ public class DictFileReader {
      * @param consumer consumer, for lambda functions
      */
     public static void readFile(String filePath, Consumer<String> consumer) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8))) {
+        readFile(filePath, consumer, "UTF-8");
+    }
+
+    /**
+     * Read a file
+     *
+     * @param filePath file path
+     * @param consumer consumer, for lambda functions
+     * @param charset  charset, default to UTF-8
+     */
+    public static void readFile(String filePath, Consumer<String> consumer, String charset) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), charset))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (consumer != null)
@@ -53,7 +57,18 @@ public class DictFileReader {
      * @param callback read line callback, instance of {@link ReadLineCallback}
      */
     public static void readFile(String filePath, ReadLineCallback callback) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8))) {
+        readFile(filePath, callback, "UTF-8");
+    }
+
+    /**
+     * Read a file
+     *
+     * @param filePath file path
+     * @param callback read line callback, instance of {@link ReadLineCallback}
+     * @param charset  charset, default to UTF-8
+     */
+    public static void readFile(String filePath, ReadLineCallback callback, String charset) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), charset))) {
             String line;
             int lino = 0;
             while ((line = reader.readLine()) != null) {
@@ -65,4 +80,5 @@ public class DictFileReader {
             e.printStackTrace();
         }
     }
+
 }
